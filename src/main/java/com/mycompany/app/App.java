@@ -13,14 +13,24 @@ import spark.template.mustache.MustacheTemplateEngine;
 
 public class App
 {
-    public static boolean search(ArrayList<Integer> array, int e) {
-      System.out.println("inside search");
-      if (array == null) return false;
-
-      for (int elt : array) {
-        if (elt == e) return true;
+    public static boolean search(ArrayList<Integer> array, int x,int y,int z) {
+      // arrayde x ve y arasındaki eleman sayısı z den büyük ise true döner aksi durumda false
+      if(x>y)
+      { //büyük olan sayıyı her zaman y yapar
+        int q =x;
+        x=y;
+        y=q;
       }
-      return false;
+
+      int count = 0;
+      if(array==null)
+        return false;
+      for (int num : array) {
+          if (num > x && num < y) {
+              count++;
+          }
+      }
+      return count > z;   
     }
 
     public static void main(String[] args) {
@@ -47,9 +57,15 @@ public class App
           String input2 = req.queryParams("input2").replaceAll("\\s","");
           int input2AsInt = Integer.parseInt(input2);
 
-          boolean result = App.search(inputList, input2AsInt);
+          String input3 = req.queryParams("input3").replaceAll("\\s","");
+          int input3AsInt = Integer.parseInt(input3);
 
-         Map map = new HashMap();
+          String input4 = req.queryParams("input4").replaceAll("\\s","");
+          int input4AsInt = Integer.parseInt(input4);
+
+          boolean result = App.search(inputList, input2AsInt, input3AsInt, input4AsInt);
+
+          Map map = new HashMap();
           map.put("result", result);
           return new ModelAndView(map, "compute.mustache");
         }, new MustacheTemplateEngine());
